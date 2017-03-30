@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <h:head>
+       <h:outputStylesheet library="resourceCss" name="style.css"   /> 
+           
+    </h:head>
+    
+ 
+ <h:body class="b1"   >
+         
+       <p:panel> 
+            <p:button value="Help" disabled="true" />
+            <p:commandButton value="Acces to system" oncomplete="PF('diaLog').show()"  process="@this"  /> 
+       </p:panel>
+     
+ <h:form id="form">
+       <p:dialog id="d1"  header="Acces to system" widgetVar="diaLog" showEffect="fade"  width="400" height="180">
+             <p:panel id="panel1">
+                  <h:panelGrid columns="3"  cellpadding="2" cellspacing="2">
+                         <p:inputText id="name" value="#{logincontroler.login}"  requiredMessage="Login reqired  "  required="true"/>
+                         <p:outputLabel for="name" value="Login"/>
+                         <p:message for="name"/>
+                <h:panelGroup>
+                            <p:password  id="pas" value="#{logincontroler.password}" label="Password" requiredMessage="Password reqired" required="true"   />
+                </h:panelGroup>
+                          <p:outputLabel for="pas" value="Password"/>
+                          <p:message for="pas"/>
+               <h:panelGroup >
+                          <p:commandButton  value="Ok" action="#{logincontroler.loginAction()}" process="@form" update="@form" />
+                          <p:commandButton   value="Cancel" onclick="PF('diaLog').hide()" process="@this">
+                                  <p:resetInput target="panel1"/>
+                          </p:commandButton>
+              </h:panelGroup>
+                   </h:panelGrid>
+              </p:panel>
+         </p:dialog>
+   </h:form>
+       
+         
+        
+   <h:panelGrid cellpadding="45">
+       <p:accordionPanel dynamic="true" multiple="false"   >
+                  <p:tab title="Access"   >
+                       <h:outputText value="Access to system after autentication. " class="p2"/>
+                  </p:tab>
+                  <p:tab title="Information">
+                        <h:outputText class="p2" value="All features this system are suitable to data processing."/>
+                  </p:tab>
+          </p:accordionPanel>
+                  <p:clock pattern="HH:mm:ss z"  	 />
+                    
+    </h:panelGrid>
+           <h:panelGrid  columns="4" cellspacing="44" cellpadding="44"    > 
+                 
+            
+                   <p:lightBox id="lighbox2">
+                                 <h:outputLink value="#" >
+                                             <h:outputText value="Samsung"  class="star"/>
+                                  </h:outputLink>
+                                 <f:facet name="inline">
+                                         <p:media value="https://www.youtube.com/v/jRW4FyJ2p1s" width="600" height="400" player="flash"/>
+                                 </f:facet>
+                   </p:lightBox>
+  
+                         
+                   <p:lightBox iframe="true" id="lighbox3">
+                                 <h:outputLink value="http://www.samsung.com/pl/home/" title="Samsung">
+                                        <h:outputText value="www.samsung.pl"  class="star"/>
+                                 </h:outputLink>
+                   </p:lightBox>
+                         
+             
+        </h:panelGrid>
+       
+    </h:body>
+      
+</html>
+     
