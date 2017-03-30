@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <h:head>
+           <h:outputStylesheet library="resourceCss" name="style.css"   /> 
+            <h:outputText value="#{initParam['value']}"/>
+    </h:head>
+     
+ <h:body   class="b4">
+        <f:metadata>
+             <f:event type="preRenderView" listener="#{personalcontroler.initPhones()}"/>
+             <f:event type="preRenderView" listener="#{personalcontroler.clearPanels()}"/>
+        </f:metadata>
+     
+         <ui:include src="/pages/panel.xhtml"/>
+      
+ <h:form id="f1">
+     <p:dataTable id="tab1" value="#{personalcontroler.phones}" var="phone" emptyMessage="You have not phones to charge."  style="width:500px"    >
+            <p:column id="col1" headerText="Yours telephone numbers">
+                                <h:outputText value="#{phone}"/>
+            </p:column>
+            <p:column headerText="to charge">
+                                <p:commandButton process="@this" action="#{phonecontroler.setVisP1(true)}"   ajax="false"    image="ui-icon ui-icon-pencil">
+                                          <f:setPropertyActionListener value="#{phone}" target="#{phonecontroler.phone}" /> 
+                                </p:commandButton>
+                
+             </p:column>
+             <p:column headerText="delete telephone number">
+                               <p:commandButton value="to erase"   action="#{personalcontroler.erasePhone()}"  process="@this"   update="@form"   image="ui-icon ui-icon-pencil" >
+                                        <f:setPropertyActionListener id="sp1" value="#{phone}"  target="#{personalcontroler.phoneToErase}" />
+                               </p:commandButton>
+              </p:column>
+    </p:dataTable>
+  </h:form>
+  <h:form>
+        <p:panelGrid layout="tabular" style=" width: 40%">
+             <p:commandButton value="add phone"   actionListener="#{personalcontroler.addPhone}" update="f1 i2 msg">
+           
+             </p:commandButton>
+            
+                 <h:inputText id="i2" value="#{personalcontroler.phoneToAdd}" validatorMessage="telephone incorrect"  >
+                      <f:validateLength minimum="9" maximum="9"/>
+                      <f:validateRegex pattern="[0-9]*"/>
+                 </h:inputText>
+        </p:panelGrid>
+ </h:form>
+       
+ <h:form id="f2">
+      
+     <p:panel  visible="#{phonecontroler.visP1}" style=" width: 40%">
+      
+               <h:outputText id="o2" value="to charge: #{phonecontroler.phone}"   />
+           
+               <p:commandButton id="b2" value="next"  action="#{phonecontroler.setVisP2(true)}" update="f3 "  onclick="this.disabled=true"     />
+               <p:commandButton id="b2a" value="cancel"  action="#{phonecontroler.executeVisPan1Pan2Pan3Pan4(false, false, false,false)}" update="f2 f3 f4 f5 msg"  />
+            
+     </p:panel>
+ </h:form>
+        
+        
+ <h:form id="f3">
+     <p:panel    visible="#{phonecontroler.visP2}" style=" width: 40%">
+                       
+            <p:commandButton value="production pin"   update="pin1" action="#{phonecontroler.generPin()}"   onclick="this.disabled=true"   />
+                         
+            <h:outputText id="pin1" value="#{phonecontroler.pin}" />
+               
+            <p:inputText id="in2" value="#{phonecontroler.inputPin}"   maxlength="4" validatorMessage="pin incorect"/>
+            <p:commandButton  id="cb2" value="execute" onclick="this.disabled=true" action="#{phonecontroler.executeChargeTel()}"    update="in2 f5 f4 f3 f2 msg"    styleClass="fmax"  />
+            <p:commandButton value="exit" action="#{phonecontroler.executeVisPan1Pan2Pan3Pan4(false,false,false,false)}" update="f2 f3 f4 f5 msg"    />
+                
+                  
+     </p:panel>
+</h:form>
+        
+        
+<h:form id="f4">
+    <p:panel  visible="#{phonecontroler.visP3}" style=" width: 50%">
+           <h:panelGroup>
+                  <p:outputLabel value="telephone to charge:  " />
+                  <h:outputText id="pho" value="#{phonecontroler.phone}"/>
+           </h:panelGroup>
+        
+        <h:panelGroup>
+              <p:panelGrid columns="4">
+                       <p:outputLabel for="in4" value="ammount"/>
+                       <h:inputText id="in4"    validatorMessage="incorect value"   >
+                                  <f:validateLength minimum="2" maximum="3"/>
+                                  <f:validateRegex pattern="[0-9]*"  />
+                  
+                       </h:inputText>
+                            <p:outputLabel value="$"/>
+                                 <h:message for="in4"/>
+              </p:panelGrid>
+              
+            
+        </h:panelGroup>
+            <h:panelGroup>
+                   <p:panelGrid columns="5">
+                          <p:outputLabel value="operator selection"/>
+                          <h:commandButton id="cb4a"  action="#{phonecontroler.chargeT()}" image="/resources/pictures/t.jpg"/>
+                           <h:commandButton id="cb4b"  action="#{phonecontroler.chargeOrange()}" image="/resources/pictures/orange.jpg"/>
+                           <h:commandButton id="cb4c"  action="#{phonecontroler.chargePlay()}" image="/resources/pictures/play.jpg"/>
+                    </p:panelGrid>
+                
+            </h:panelGroup>
+           
+    </p:panel>
+ </h:form>
+       <h:form id="f5">
+               <p:panel visible="#{phonecontroler.visP4}" style=" width: 40%">
+                      <p:commandButton  value="exit" action="#{phonecontroler.executeVisPan1Pan2Pan3Pan4(false,false,false,false)}" update="f2 f3 f4 f5 msg"    />
+               </p:panel>
+        </h:form> 
+          <h:messages id="msg"   style="color: red"  />
+</h:body>
+   
+</html>
+
+        
